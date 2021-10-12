@@ -1,0 +1,33 @@
+// ==========================================
+// FORMS
+// ==========================================
+
+@use "../abstracts/" as a;
+
+#search-form {
+  max-width: 500px;
+  padding-right: 1rem;
+  width: 100%;
+}
+
+.search-box {
+  background-color: #00000055;
+  border: 1px solid #ffffff55;
+  border-radius: 5rem;
+  color: #fff;
+  font-family: a.$body-font;
+  padding: 0.5rem;
+  padding-right: 0.5rem;
+  text-align: right;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #aaa;
+    padding-right: 0.5rem;
+    text-align: right;
+  }
+}

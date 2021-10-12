@@ -1,0 +1,23 @@
+// ==========================================
+// LAYOUT
+// ==========================================
+
+@use "../abstracts/" as a;
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #111;
+  color: transparent;
+  transition: color .4s ease;
+
+  &:hover {
+      color: #aaa;
+  }
+}

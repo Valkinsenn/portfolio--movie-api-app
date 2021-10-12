@@ -1,0 +1,127 @@
+// ==========================================
+// PAGES
+// ==========================================
+
+@use "../abstracts/" as a;
+
+// Main Page
+
+.page-content {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "body"
+    "footer";
+  grid-template-rows: 75px 1fr 50px;
+  height: 100vh;
+  width: 100vw;
+}
+
+.site-header {
+  backdrop-filter: blur(10px);
+  background-color: #00000055;
+  display: flex;
+  grid-area: header;
+  justify-content: center;
+
+  &__inner-wrapper {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    max-width: 1000px;
+    width: 100%;
+  }
+}
+
+.movie-box {
+  display: flex;
+  grid-area: body;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1rem 0;
+
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0 1rem;
+    width: 100%;
+  }
+
+  &__display-box {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-right: -0.75rem;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 576px) {
+    &__wrapper {
+      padding: unset;
+    }
+  }
+}
+
+.movie {
+  position: relative;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &-details {
+    background-color: #00000099;
+    height: 100%;
+    opacity: 0;
+    padding: 0.5rem;
+    position: absolute;
+    transition: all 0.2s ease;
+    width: 100%;
+
+    h2 {
+      color: #fff;
+      font-weight: normal;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.site-footer {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background-color: #00000055;
+  display: flex;
+  grid-area: footer;
+  justify-content: center;
+
+  &__inner-wrapper {
+    max-width: 500px;
+
+    h1 {
+      color: #aaa;
+      font-size: 1rem;
+      font-weight: normal;
+    }
+  }
+}
+
+.bg-img {
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: -1;
+}

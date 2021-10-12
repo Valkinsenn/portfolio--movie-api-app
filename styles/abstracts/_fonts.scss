@@ -1,0 +1,13 @@
+// ==========================================
+// FONTS
+// ==========================================
+
+@font-face {
+    font-family: "Steelfish";
+    src: url("../assets/fonts/steelfish.ttf");
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+$main-font: "Steelfish", sans-serif;
+$body-font: "Montserrat", sans-serif;

@@ -1,0 +1,33 @@
+// ==========================================
+// TYPOGRAPHY
+// ==========================================
+
+@use "../abstracts/" as a;
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-family: a.$main-font;
+  letter-spacing: 0.1rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+a.site-logo-wrapper {
+  color: a.$primary-color;
+  padding: 1rem;
+  padding-right: 0.25rem;
+  text-decoration: none;
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.1rem;
+  }
+
+  @media screen and (min-width: 576px) {
+    padding-right: 1rem;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.15rem;
+    }
+  }
+}
