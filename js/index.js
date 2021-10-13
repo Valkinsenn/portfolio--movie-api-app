@@ -46,6 +46,8 @@ const getGenres = async url => {
 
 // Function to fetch movies (and genres, WIP):
 const showMovies = async (apiUrl, genreUrl) => {
+
+  // Gets the list of genres to be checked later:
   fetch(genreUrl)
     .then(response => response.json())
     .then(data =>
@@ -57,6 +59,7 @@ const showMovies = async (apiUrl, genreUrl) => {
       console.log(error)
     })
 
+  // Gets movies:
   fetch(apiUrl)
     .then(response => response.json())
     .then(data =>
@@ -145,6 +148,10 @@ searchForm.addEventListener("submit", event => {
     if (!hasSearched) {
       hasSearched = true
     }
+
+    setTimeout(() => {
+      console.clear()
+    }, 100)
   }
 })
 
@@ -154,5 +161,9 @@ resetButton.addEventListener("click", () => {
     movieBoxDisplay.innerHTML = ``
     showMovies(apiUrl)
     hasSearched = false
+    
+    setTimeout(() => {
+      console.clear()
+    }, 100)
   }
 })
