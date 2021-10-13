@@ -11,13 +11,13 @@
 }
 
 .search-box {
-  background-color: #00000055;
-  border: 1px solid #ffffff55;
+  background-color: #00000066;
+  border: none;
   border-radius: 5rem;
   color: #fff;
   font-family: a.$body-font;
   padding: 0.5rem;
-  padding-right: 0.5rem;
+  padding-right: 1rem;
   text-align: right;
   width: 100%;
 
@@ -27,7 +27,11 @@
 
   &::placeholder {
     color: #aaa;
-    padding-right: 0.5rem;
     text-align: right;
+  }
+
+  @media screen and (min-width: 576px) {
+    padding: .65rem;
+    padding-right: 1rem;
   }
 }

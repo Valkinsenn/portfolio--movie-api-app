@@ -54,7 +54,8 @@
   &__display-box {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: minmax(min-content, max-content);
+    grid-template-columns: repeat(1, 1fr);
     margin-right: -0.75rem;
     max-width: 1000px;
     width: 100%;
@@ -64,35 +65,101 @@
     &__wrapper {
       padding: unset;
     }
+
+    &__display-box {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 768px) { 
+    &__display-box {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 992px) { 
+    &__display-box {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 }
 
 .movie {
+  animation: movieFadeIn 1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  // border-radius: 1rem;
+  overflow: hidden;
   position: relative;
+  
+  &-details {
+    backdrop-filter: blur(10px);
+    background-color: #00000099;
+    border-radius: .5rem .5rem 0;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 35%;
+    height: 100%;
+    // opacity: 0;
+    padding: 1rem;
+    position: absolute;
+    top: 100%;
+    transition: top 0.4s ease;
+    width: 100%;
+  }
 
-  img {
+  &-genre-box {
+    color: #fff;
+    flex-wrap: wrap;
+    font-family: a.$body-font;
+    font-size: .8rem;
+    font-weight: normal;
+    // display: flex;
+    gap: 0.5rem;
+    letter-spacing: normal;
+    text-transform: capitalize;
+    width: 100%;
+  }
+
+  &-genre-tag {
+    background-color: #ffffff22;
+    border-radius: 5rem;
+    cursor: default;
+    display: inline-block;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  &-poster {
     height: 100%;
     width: 100%;
     object-fit: cover;
   }
 
-  &-details {
-    background-color: #00000099;
-    height: 100%;
+  &-title {
+    color: #fff;
+    cursor: default;
+    font-family: a.$body-font;
+    font-size: 1.3rem;
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: capitalize;
+  }
+
+  &:hover &-details {
+    // opacity: 1;
+    top: 35%;
+  }
+
+  @media screen and (min-width: 576px) {
+    // max-width: 240px;
+  }
+}
+
+@keyframes movieFadeIn {
+  0% {
     opacity: 0;
-    padding: 0.5rem;
-    position: absolute;
-    transition: all 0.2s ease;
-    width: 100%;
-
-    h2 {
-      color: #fff;
-      font-weight: normal;
-    }
-
-    &:hover {
-      opacity: 1;
-    }
+  }
+  100% {
+    opacity: 1;
   }
 }
 
