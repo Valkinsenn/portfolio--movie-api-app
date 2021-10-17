@@ -64,6 +64,11 @@
   @media screen and (min-width: 576px) {
     &__wrapper {
       padding: unset;
+      transition: color .4s ease;
+
+      &:hover {
+        color: #aaa;
+      }
     }
 
     &__display-box {
@@ -88,26 +93,44 @@
   animation: movieFadeIn 1s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  // border-radius: 1rem;
+  border-radius: .5rem;
   overflow: hidden;
   position: relative;
+
+  &-description {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
   
   &-details {
     backdrop-filter: blur(10px);
     background-color: #00000099;
-    border-radius: .5rem .5rem 0;
+    border-radius: .5rem .5rem 0 0;
+    // bottom: 0; // For testing purposes.
+    bottom: calc(-75% - 5px); // For testing purposes.
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 35%;
-    height: 100%;
+    // grid-template-rows: minmax(min-content, max-content);
+    // grid-template-rows: repeat(3, 1fr);
+    max-height: 100%;
+    min-height: 75%;
     // opacity: 0;
-    padding: 1rem;
+    overflow-y: overlay;
+    // padding: 1rem;
     position: absolute;
-    top: 100%;
-    transition: top 0.4s ease;
+    transition: bottom 0.4s ease;
     width: 100%;
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      margin-top: unset;
+      margin-bottom: unset;
+    }
   }
 
   &-genre-box {
+    align-self: end;
     color: #fff;
     flex-wrap: wrap;
     font-family: a.$body-font;
@@ -115,7 +138,9 @@
     font-weight: normal;
     // display: flex;
     gap: 0.5rem;
+    // height: 100%;
     letter-spacing: normal;
+    padding: 0.75rem;
     text-transform: capitalize;
     width: 100%;
   }
@@ -123,34 +148,147 @@
   &-genre-tag {
     background-color: #ffffff22;
     border-radius: 5rem;
-    cursor: default;
+    cursor: pointer;
     display: inline-block;
+    margin: 0.25rem;
     padding: 0.3rem 0.5rem;
+    transition: background-color .2s ease;
+
+    &:hover {
+      background-color: #ffffff55;
+    }
+  }
+
+  &-panel {
+    animation: movieFadeIn .5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    background-color: #00000055;
+    grid-area: body;
+    position: relative;
+    z-index: 2;
   }
   
   &-poster {
     height: 100%;
     width: 100%;
     object-fit: cover;
+
+    &:before {
+      background: #111;
+      content: "";
+      display: block;
+      height: 100%;
+    }
+
+    &:after {
+      background-image: url('../assets/images/film-reel-icon.png');
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      content: "";
+      display: block;
+      height: 100%;
+      left: 50%;
+      opacity: 0.1;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+
+  &-rating-box {
+    border-left: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+  }
+
+  &-rating-count {
+    // align-self: end;
+    color: #bbb;
+    cursor: default;
+    font-family: a.$body-font;
+    font-size: .8rem;
+    font-weight: normal;
+    letter-spacing: normal;
+  }
+
+  &-rating {
+    color: #bbb;
+    cursor: default;
+    font-family: a.$body-font;
+    font-size: 1.2rem;
+    font-weight: normal;
+    letter-spacing: normal;
+
+    span {
+      color: #fff;
+      font-weight: bold;
+    }
   }
 
   &-title {
     color: #fff;
-    cursor: default;
+    cursor: pointer;
     font-family: a.$body-font;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: normal;
     letter-spacing: normal;
+    padding: 1rem;
     text-transform: capitalize;
+    transition: color .2s ease;
+
+    &:hover {
+      color: a.$primary-color;
+    }
   }
 
-  &:hover &-details {
-    // opacity: 1;
-    top: 35%;
+  &-year {
+    color: #fff;
+    cursor: default;
+    font-family: a.$body-font;
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: normal;
+    padding-right: 0.5rem;
   }
 
+  
   @media screen and (min-width: 576px) {
-    // max-width: 240px;
+    &:hover &-details {
+      bottom: 0%;
+    }
+  }
+}
+
+.close-button {
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 30px;
+}
+
+.x-button {
+  background: #fff;
+  display: block;
+  height: 1px;
+  position: absolute;
+  top: 50%;
+  transform: rotate(45deg);
+  width: 100%;
+  
+  &::after {
+    background: #fff;
+    content: "";
+    display: block;
+    height: 1px;
+    transform: rotate(90deg);
   }
 }
 

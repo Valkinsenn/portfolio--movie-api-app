@@ -52,11 +52,6 @@
 body {
   background: #111;
   color: transparent;
-  transition: color 0.4s ease;
-}
-
-body:hover {
-  color: #aaa;
 }
 
 .page-content {
@@ -115,6 +110,11 @@ body:hover {
 @media screen and (min-width: 576px) {
   .movie-box__wrapper {
     padding: unset;
+    transition: color 0.4s ease;
+  }
+
+  .movie-box__wrapper:hover {
+    color: #aaa;
   }
 
   .movie-box__display-box {
@@ -135,25 +135,40 @@ body:hover {
   animation: movieFadeIn 1s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+  border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+}
+
+.movie-description {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .movie-details {
   backdrop-filter: blur(10px);
   background-color: #00000099;
-  border-radius: 0.5rem 0.5rem 0;
+  border-radius: 0.5rem 0.5rem 0 0;
+  bottom: calc(-75% - 5px);
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 35%;
-  height: 100%;
-  padding: 1rem;
+  max-height: 100%;
+  min-height: 75%;
+  overflow-y: overlay;
   position: absolute;
-  top: 100%;
-  transition: top 0.4s ease;
+  transition: bottom 0.4s ease;
   width: 100%;
 }
 
+.movie-details::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: unset;
+  margin-bottom: unset;
+}
+
 .movie-genre-box {
+  align-self: end;
   color: #fff;
   flex-wrap: wrap;
   font-family: "Montserrat", sans-serif;
@@ -161,6 +176,7 @@ body:hover {
   font-weight: normal;
   gap: 0.5rem;
   letter-spacing: normal;
+  padding: 0.75rem;
   text-transform: capitalize;
   width: 100%;
 }
@@ -168,9 +184,25 @@ body:hover {
 .movie-genre-tag {
   background-color: #ffffff22;
   border-radius: 5rem;
-  cursor: default;
+  cursor: pointer;
   display: inline-block;
+  margin: 0.25rem;
   padding: 0.3rem 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.movie-genre-tag:hover {
+  background-color: #ffffff55;
+}
+
+.movie-panel {
+  animation: movieFadeIn 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  background-color: #00000055;
+  grid-area: body;
+  position: relative;
+  z-index: 2;
 }
 
 .movie-poster {
@@ -179,18 +211,117 @@ body:hover {
   object-fit: cover;
 }
 
+.movie-poster:before {
+  background: #111;
+  content: "";
+  display: block;
+  height: 100%;
+}
+
+.movie-poster:after {
+  background-image: url("../assets/images/film-reel-icon.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  content: "";
+  display: block;
+  height: 100%;
+  left: 50%;
+  opacity: 0.1;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.movie-rating-box {
+  border-left: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.5rem;
+}
+
+.movie-rating-count {
+  color: #bbb;
+  cursor: default;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
+.movie-rating {
+  color: #bbb;
+  cursor: default;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
+.movie-rating span {
+  color: #fff;
+  font-weight: bold;
+}
+
 .movie-title {
+  color: #fff;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.15rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  padding: 1rem;
+  text-transform: capitalize;
+  transition: color 0.2s ease;
+}
+
+.movie-title:hover {
+  color: #0bf;
+}
+
+.movie-year {
   color: #fff;
   cursor: default;
   font-family: "Montserrat", sans-serif;
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: normal;
   letter-spacing: normal;
-  text-transform: capitalize;
+  padding-right: 0.5rem;
 }
 
-.movie:hover .movie-details {
-  top: 35%;
+@media screen and (min-width: 576px) {
+  .movie:hover .movie-details {
+    bottom: 0%;
+  }
+}
+.close-button {
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 30px;
+}
+
+.x-button {
+  background: #fff;
+  display: block;
+  height: 1px;
+  position: absolute;
+  top: 50%;
+  transform: rotate(45deg);
+  width: 100%;
+}
+
+.x-button::after {
+  background: #fff;
+  content: "";
+  display: block;
+  height: 1px;
+  transform: rotate(90deg);
 }
 
 @keyframes movieFadeIn {

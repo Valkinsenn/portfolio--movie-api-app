@@ -10,14 +10,17 @@ const genreUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey
 const imgPath = `https://image.tmdb.org/t/p/w1280`
 const searchApi = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=`
 
+
 // +++++++++++++++++++++++++++++++++++++++++++
 // DOM QUERIES
 // +++++++++++++++++++++++++++++++++++++++++++
 
 const movieBoxDisplay = document.querySelector("#display-box")
+const pageContent = document.querySelector('.page-content')
 const resetButton = document.querySelector(`#site-logo`)
 const searchForm = document.querySelector("#search-form")
 const searchBox = document.querySelector("#search-box")
+
 
 // +++++++++++++++++++++++++++++++++++++++++++
 // GLOBAL VARIABLES
@@ -26,8 +29,9 @@ const searchBox = document.querySelector("#search-box")
 let genresList = []
 let hasSearched = false
 
+
 // +++++++++++++++++++++++++++++++++++++++++++
-// MAIN CODE
+// FUNCTIONS
 // +++++++++++++++++++++++++++++++++++++++++++
 
 // Function to fetch genres:
@@ -43,6 +47,7 @@ const getGenres = async url => {
       console.log(error)
     })
 }
+
 
 // Function to fetch movies (and genres, WIP):
 const showMovies = async (apiUrl, genreUrl) => {
@@ -64,7 +69,8 @@ const showMovies = async (apiUrl, genreUrl) => {
     .then(response => response.json())
     .then(data =>
       data.results.forEach((element, i) => {
-        // console.log(element);
+        // For testing purposes:
+        console.log(element);
 
         // Filters the list of genres by ID, then gets the name of each genre:
         const genres = genresList
@@ -75,19 +81,72 @@ const showMovies = async (apiUrl, genreUrl) => {
           // Sets up the main movie element display:
           const movieElement = document.createElement("div")
           movieElement.classList.add(`movie`)
-  
+          movieBoxDisplay.appendChild(movieElement)
+ 
+          // Sets up the movie's poster:
+          const moviePoster = document.createElement("img")
+          moviePoster.classList.add('movie-poster')
+          movieElement.appendChild(moviePoster)
+          moviePoster.src = `${imgPath}${element.poster_path}`
+          
+          // In case the image doesn't load:
+          moviePoster.addEventListener("error", () => {
+            console.log(`Well, shit! I didn't load! :'(`);
+          })
+          
           // Sets up the movie details display:
           const movieDetails = document.createElement("div")
           movieDetails.classList.add(`movie-details`)
+          movieDetails.innerHTML = `
+            
+          `
           movieElement.appendChild(movieDetails)
+
+          // Sets up the movie's title:
+          const movieTitle = document.createElement("h2")
+          movieTitle.classList.add('movie-title')
+          movieDetails.appendChild(movieTitle)
+          movieTitle.innerHTML = `${element.title}`
   
           // Sets up the movie description:
-          const movieDesc = document.createElement("p")
+          const movieDesc = document.createElement("div")
           movieDesc.classList.add('movie-description')
+          movieDetails.appendChild(movieDesc)
+
+          // Sets up the movie's year in the description:
+          const movieYear = document.createElement("h3")
+          movieYear.classList.add('movie-year')
+          movieDesc.appendChild(movieYear)
+
+          // Sometimes, movies don't have a year.
+          // This is for correcting that little error:
+          if (element.release_date) {
+            movieYear.innerHTML = `${dateFns.format(element.release_date, "YYYY")}`
+          } else {
+            movieYear.innerHTML = `N/A`
+          }
+
+          // Sets up the movie's rating box in the description:
+          const movieRatingBox = document.createElement("div")
+          movieRatingBox.classList.add('movie-rating-box')
+          movieDesc.appendChild(movieRatingBox)
+          
+          // Sets up the movie's actual rating (out of ten):
+          const movieRating = document.createElement("h4")
+          movieRating.classList.add('movie-rating')
+          movieRatingBox.appendChild(movieRating)
+          movieRating.innerHTML = `<span>${element.vote_average}</span> / 10`
+
+          // Sets up the movie's rating count:
+          const movieRatingCount = document.createElement('h4')
+          movieRatingCount.classList.add('movie-rating-count')
+          movieRatingBox.appendChild(movieRatingCount)
+          movieRatingCount.innerHTML = `${element.vote_count}`
 
           // Sets up the genre collection:
           const movieGenreBox = document.createElement("div")
           movieGenreBox.classList.add('movie-genre-box')
+          movieDetails.appendChild(movieGenreBox)
 
           // Sets up the genre tags, then plugs them in:
           genres.map(item => {
@@ -97,26 +156,15 @@ const showMovies = async (apiUrl, genreUrl) => {
 
             movieGenreBox.appendChild(genreTag)
           })
-
-          // Sets up the movie's title:
-          const movieTitle = document.createElement("h2")
-          movieTitle.classList.add('movie-title')
-
-          // Sets up the movie's poster:
-          const moviePoster = document.createElement("img")
-          moviePoster.classList.add('movie-poster')
   
           // Plugs the data into its proper places:
-          // movieGenreBox.innerHTML = `${genres}`
-          movieTitle.innerHTML = `${element.title}`
-          moviePoster.src = `${imgPath}${element.poster_path}`
   
           // Weaves everything together:
-          movieElement.appendChild(moviePoster)
-          movieDetails.appendChild(movieTitle)
-          movieDetails.appendChild(movieDesc)
-          movieDetails.appendChild(movieGenreBox)
-          movieBoxDisplay.appendChild(movieElement)
+
+          // Adds a click event listener to each title:
+          // movieTitle.addEventListener("click", () => {
+          //   fetchMovie(element.id)
+          // })
         }, i * 100)
 
       })
@@ -126,11 +174,54 @@ const showMovies = async (apiUrl, genreUrl) => {
     })
 }
 
+
+// Function to get a single movie:
+const fetchMovie = (elementId) => {
+  const movieSearchUrl = `https://api.themoviedb.org/3/movie/${elementId}?api_key=${apiKey}&language=en-US`
+
+  // For testing purposes.
+  // console.log(`You clicked me! My ID is: ${elementId}. You can search for me at ${movieSearchUrl}`);
+
+  fetch(movieSearchUrl)
+    .then(response => response.json())
+    .then(data => {
+
+      // console.log(data);
+
+      // Creates a panel for the fetched movie info:
+      const moviePanel = document.createElement('article')
+      moviePanel.classList.add('movie-panel')
+      pageContent.appendChild(moviePanel)
+
+      // Adds a button to close the panel:
+      const closeButton = document.createElement('div')
+      closeButton.classList.add('close-button')
+      closeButton.innerHTML = `<span class="x-button"></span>`
+      moviePanel.appendChild(closeButton)
+
+      // Closes the panel down:
+      closeButton.addEventListener("click", () => {
+        moviePanel.remove()
+      })
+    })
+}
+
+
+// +++++++++++++++++++++++++++++++++++++++++++
+// FUNCTION CALLERS
+// +++++++++++++++++++++++++++++++++++++++++++
+
 // Calls the getGenres function:
 // getGenres(genreUrl)
 
 // Calls the showMovies function:
 showMovies(apiUrl, genreUrl)
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++
+// EVENT LISTENERS
+// +++++++++++++++++++++++++++++++++++++++++++
 
 // Event listener for the movie search bar:
 searchForm.addEventListener("submit", event => {
@@ -149,9 +240,9 @@ searchForm.addEventListener("submit", event => {
       hasSearched = true
     }
 
-    setTimeout(() => {
-      console.clear()
-    }, 100)
+    // setTimeout(() => {
+    //   console.clear()
+    // }, 100)
   }
 })
 
@@ -162,8 +253,8 @@ resetButton.addEventListener("click", () => {
     showMovies(apiUrl)
     hasSearched = false
     
-    setTimeout(() => {
-      console.clear()
-    }, 100)
+    // setTimeout(() => {
+    //   console.clear()
+    // }, 100)
   }
 })
