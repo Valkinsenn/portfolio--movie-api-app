@@ -16,3 +16,33 @@ body {
   background: #111;
   color: transparent;
 }
+
+.bg-img {
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: -1;
+}
+
+.site-footer {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background-color: #00000055;
+  display: flex;
+  grid-area: footer;
+  justify-content: center;
+
+  &__inner-wrapper {
+    max-width: 500px;
+
+    h1 {
+      color: #aaa;
+      font-size: 1rem;
+      font-weight: normal;
+    }
+  }
+}

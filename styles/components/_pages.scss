@@ -34,7 +34,7 @@
   }
 }
 
-.movie-box {
+.movies {
   display: flex;
   grid-area: body;
   height: 100%;
@@ -89,6 +89,8 @@
   }
 }
 
+// Movies Display Box
+
 .movie {
   animation: movieFadeIn 1s;
   animation-iteration-count: 1;
@@ -96,6 +98,14 @@
   border-radius: .5rem;
   overflow: hidden;
   position: relative;
+
+  &-cert {
+    color: #fff;
+    font-family: a.$body-font;
+    font-size: 1.2rem;
+    letter-spacing: normal;
+    padding-left: 0.5rem;
+  }
 
   &-description {
     align-items: center;
@@ -109,7 +119,7 @@
     background-color: #00000099;
     border-radius: .5rem .5rem 0 0;
     // bottom: 0; // For testing purposes.
-    bottom: calc(-75% - 5px); // For testing purposes.
+    bottom: calc(-75% - 5px); // The main position.
     display: grid;
     // grid-template-rows: minmax(min-content, max-content);
     // grid-template-rows: repeat(3, 1fr);
@@ -160,13 +170,39 @@
   }
 
   &-panel {
-    animation: movieFadeIn .5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    background-color: #00000055;
+    align-items: center;
+    background-color: #00000099;
+    display: flex;
     grid-area: body;
+    justify-content: center;
+    opacity: 0;
+    padding: 1rem;
+    pointer-events: none;
     position: relative;
+    transition: opacity .5s ease-in-out;
     z-index: 2;
+
+    &-details {
+      background-color: #111;
+      border-radius: .5rem;
+      height: 100%;
+      max-width: 1000px;
+      overflow: overlay;
+      padding: 1rem;
+      width: 100%;
+
+      h3, h4 {
+        color: #fff;
+        font-family: a.$body-font;
+        font-size: 1.6rem;
+        font-weight: normal;
+        text-transform: capitalize;
+      }
+
+      h4 {
+          font-size: 1rem;
+      }
+    }
   }
   
   &-poster {
@@ -200,9 +236,11 @@
 
   &-rating-box {
     border-left: 1px solid white;
+    // border-right: 1px solid white;
     display: flex;
     flex-direction: column;
     padding-left: 0.5rem;
+    // padding-right: 0.5rem;
   }
 
   &-rating-count {
@@ -250,7 +288,7 @@
     cursor: default;
     font-family: a.$body-font;
     font-size: 2rem;
-    font-weight: normal;
+    // font-weight: normal;
     letter-spacing: normal;
     padding-right: 0.5rem;
   }
@@ -263,15 +301,51 @@
   }
 }
 
+// Selected Movie Details Panel
+
+.display-checkbox {
+  grid-area: body;
+  display: none;
+
+  &:checked ~ .movie-panel {
+    // display: block;
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.panel {
+
+  &-poster {
+    max-width: 240px;
+  }
+
+  &-title-block {
+
+  }
+}
+
 .close-button {
+  align-items: center;
   color: #fff;
   cursor: pointer;
   display: flex;
-  height: 30px;
+  height: 20px;
+  justify-content: center;
   position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 30px;
+  right: 0;
+  top: 0;
+  transition: background-color .2s ease-in-out;
+  width: 20px;
+
+  &:hover {
+    background-color: #ffffff55;
+  }
+
+  @media screen and (min-width: 576px) {
+    height: 40px;
+    width: 40px;
+  }
 }
 
 .x-button {
@@ -281,7 +355,7 @@
   position: absolute;
   top: 50%;
   transform: rotate(45deg);
-  width: 100%;
+  width: 50%;
   
   &::after {
     background: #fff;
@@ -299,34 +373,4 @@
   100% {
     opacity: 1;
   }
-}
-
-.site-footer {
-  align-items: center;
-  backdrop-filter: blur(10px);
-  background-color: #00000055;
-  display: flex;
-  grid-area: footer;
-  justify-content: center;
-
-  &__inner-wrapper {
-    max-width: 500px;
-
-    h1 {
-      color: #aaa;
-      font-size: 1rem;
-      font-weight: normal;
-    }
-  }
-}
-
-.bg-img {
-  height: 100vh;
-  object-fit: cover;
-  object-position: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  z-index: -1;
 }

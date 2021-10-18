@@ -54,6 +54,36 @@ body {
   color: transparent;
 }
 
+.bg-img {
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: -1;
+}
+
+.site-footer {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background-color: #00000055;
+  display: flex;
+  grid-area: footer;
+  justify-content: center;
+}
+
+.site-footer__inner-wrapper {
+  max-width: 500px;
+}
+
+.site-footer__inner-wrapper h1 {
+  color: #aaa;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
 .page-content {
   display: grid;
   grid-template-areas: "header" "body" "footer";
@@ -79,7 +109,7 @@ body {
   width: 100%;
 }
 
-.movie-box {
+.movies {
   display: flex;
   grid-area: body;
   height: 100%;
@@ -88,7 +118,7 @@ body {
   padding: 1rem 0;
 }
 
-.movie-box__wrapper {
+.movies__wrapper {
   display: flex;
   justify-content: center;
   overflow-x: hidden;
@@ -97,7 +127,7 @@ body {
   width: 100%;
 }
 
-.movie-box__display-box {
+.movies__display-box {
   display: grid;
   gap: 1rem;
   grid-auto-rows: minmax(min-content, max-content);
@@ -108,26 +138,26 @@ body {
 }
 
 @media screen and (min-width: 576px) {
-  .movie-box__wrapper {
+  .movies__wrapper {
     padding: unset;
     transition: color 0.4s ease;
   }
 
-  .movie-box__wrapper:hover {
+  .movies__wrapper:hover {
     color: #aaa;
   }
 
-  .movie-box__display-box {
+  .movies__display-box {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media screen and (min-width: 768px) {
-  .movie-box__display-box {
+  .movies__display-box {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 @media screen and (min-width: 992px) {
-  .movie-box__display-box {
+  .movies__display-box {
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -138,6 +168,14 @@ body {
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+}
+
+.movie-cert {
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: normal;
+  padding-left: 0.5rem;
 }
 
 .movie-description {
@@ -196,13 +234,39 @@ body {
 }
 
 .movie-panel {
-  animation: movieFadeIn 0.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  background-color: #00000055;
+  align-items: center;
+  background-color: #00000099;
+  display: flex;
   grid-area: body;
+  justify-content: center;
+  opacity: 0;
+  padding: 1rem;
+  pointer-events: none;
   position: relative;
+  transition: opacity 0.5s ease-in-out;
   z-index: 2;
+}
+
+.movie-panel-details {
+  background-color: #111;
+  border-radius: 0.5rem;
+  height: 100%;
+  max-width: 1000px;
+  overflow: overlay;
+  padding: 1rem;
+  width: 100%;
+}
+
+.movie-panel-details h3, .movie-panel-details h4 {
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  font-weight: normal;
+  text-transform: capitalize;
+}
+
+.movie-panel-details h4 {
+  font-size: 1rem;
 }
 
 .movie-poster {
@@ -285,7 +349,6 @@ body {
   cursor: default;
   font-family: "Montserrat", sans-serif;
   font-size: 2rem;
-  font-weight: normal;
   letter-spacing: normal;
   padding-right: 0.5rem;
 }
@@ -295,17 +358,44 @@ body {
     bottom: 0%;
   }
 }
+.display-checkbox {
+  grid-area: body;
+  display: none;
+}
+
+.display-checkbox:checked ~ .movie-panel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.panel-poster {
+  max-width: 240px;
+}
+
 .close-button {
+  align-items: center;
   color: #fff;
   cursor: pointer;
   display: flex;
-  height: 30px;
+  height: 20px;
+  justify-content: center;
   position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 30px;
+  right: 0;
+  top: 0;
+  transition: background-color 0.2s ease-in-out;
+  width: 20px;
 }
 
+.close-button:hover {
+  background-color: #ffffff55;
+}
+
+@media screen and (min-width: 576px) {
+  .close-button {
+    height: 40px;
+    width: 40px;
+  }
+}
 .x-button {
   background: #fff;
   display: block;
@@ -313,7 +403,7 @@ body {
   position: absolute;
   top: 50%;
   transform: rotate(45deg);
-  width: 100%;
+  width: 50%;
 }
 
 .x-button::after {
@@ -332,36 +422,6 @@ body {
     opacity: 1;
   }
 }
-.site-footer {
-  align-items: center;
-  backdrop-filter: blur(10px);
-  background-color: #00000055;
-  display: flex;
-  grid-area: footer;
-  justify-content: center;
-}
-
-.site-footer__inner-wrapper {
-  max-width: 500px;
-}
-
-.site-footer__inner-wrapper h1 {
-  color: #aaa;
-  font-size: 1rem;
-  font-weight: normal;
-}
-
-.bg-img {
-  height: 100vh;
-  object-fit: cover;
-  object-position: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  z-index: -1;
-}
-
 ::-webkit-scrollbar {
   width: 0.75rem;
 }
