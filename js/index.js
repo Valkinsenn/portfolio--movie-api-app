@@ -5,7 +5,7 @@
 // +++++++++++++++++++++++++++++++++++++++++++
 
 const apiKey = `64eb5adfc85d8e838d751c3a4c23f914`
-const apiUrl = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
+const apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&certification_country=US&certification.gte=G&certification.lte=R&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
 const genreUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
 const imgPath = `https://image.tmdb.org/t/p/w1280`
 const searchApi = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=`
@@ -68,7 +68,7 @@ const showMovies = async (apiUrl, genreUrl) => {
     .then(data =>
       data.results.forEach((element, i) => {
         // For testing purposes:
-        // console.log(element);
+        console.log(element)
 
         // Filters the list of genres by ID, then gets the name of each genre:
         const genres = genresList
@@ -79,7 +79,9 @@ const showMovies = async (apiUrl, genreUrl) => {
           // Sets up the main movie element display:
           const movieElement = document.createElement("div")
           movieElement.classList.add(`movie`)
-          movieBoxDisplay.appendChild(movieElement)
+          if (element.release_date) {
+            movieBoxDisplay.appendChild(movieElement)
+          }
 
           // Sets up the movie's poster:
           const moviePoster = document.createElement("img")
@@ -143,31 +145,34 @@ const showMovies = async (apiUrl, genreUrl) => {
           movieRatingCount.innerHTML = `${element.vote_count}`
 
           // Sets up the movie's certification:
-          // const releaseDateUrl = `https://api.themoviedb.org/3/movie/${element.id}/release_dates?api_key=${apiKey}`
-          // const movieCert = document.createElement("h3")
-          // movieCert.classList.add("movie-cert")
+          const releaseDateUrl = `https://api.themoviedb.org/3/movie/${element.id}/release_dates?api_key=${apiKey}`
+          const movieCert = document.createElement("h3")
+          movieCert.classList.add("movie-cert")
 
-          // fetch(releaseDateUrl)
-          //   .then(response => response.json())
-          //   .then(data => {
-          //     console.log(data)
+          fetch(releaseDateUrl)
+            .then(response => response.json())
+            .then(data => {
+              // console.log(data)
 
-          //     data.results.forEach(item => {
-          //       if (item.iso_3166_1 === "US") {
-          //         item.release_dates.forEach(date => {
-          //           console.log(date)
+              data.results.forEach(item => {
+                if (item.iso_3166_1 === "US") {
+                  item.release_dates.forEach(date => {
+                    // console.log(date)
 
-          //           if (date.certification) {
-          //             movieCert.innerHTML = `${date.certification}`
-          //           } else if (!date.certification || date.certification == "") {
-          //             movieCert.innerHTML = `NR`
-          //           }
-          //         })
-          //       }
-          //     })
-          //   })
+                    if (date.certification) {
+                      movieCert.innerHTML = `${date.certification}`
+                    } else if (
+                      !date.certification ||
+                      date.certification == ""
+                    ) {
+                      movieCert.innerHTML = `NR`
+                    }
+                  })
+                }
+              })
+            })
 
-          // movieDesc.appendChild(movieCert)
+          movieDesc.appendChild(movieCert)
 
           // Sets up the genre collection:
           const movieGenreBox = document.createElement("div")

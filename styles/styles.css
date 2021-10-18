@@ -298,11 +298,22 @@ body {
   width: 100%;
 }
 
+.movie-rating {
+  color: #bbb;
+  cursor: default;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
 .movie-rating-box {
   border-left: 1px solid white;
+  border-right: 1px solid white;
   display: flex;
   flex-direction: column;
   padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .movie-rating-count {
@@ -310,15 +321,6 @@ body {
   cursor: default;
   font-family: "Montserrat", sans-serif;
   font-size: 0.8rem;
-  font-weight: normal;
-  letter-spacing: normal;
-}
-
-.movie-rating {
-  color: #bbb;
-  cursor: default;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.2rem;
   font-weight: normal;
   letter-spacing: normal;
 }
@@ -348,7 +350,7 @@ body {
   color: #fff;
   cursor: default;
   font-family: "Montserrat", sans-serif;
-  font-size: 2rem;
+  font-size: 1.3rem;
   letter-spacing: normal;
   padding-right: 0.5rem;
 }
