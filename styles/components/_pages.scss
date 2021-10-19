@@ -1,6 +1,6 @@
-// ==========================================
-// PAGES
-// ==========================================
+/* ==========================================
+/ PAGES
+========================================== */
 
 @use "../abstracts/" as a;
 
@@ -64,7 +64,7 @@
   @media screen and (min-width: 576px) {
     &__wrapper {
       padding: unset;
-      transition: color .4s ease;
+      transition: color 0.4s ease;
 
       &:hover {
         color: #aaa;
@@ -76,13 +76,13 @@
     }
   }
 
-  @media screen and (min-width: 768px) { 
+  @media screen and (min-width: 768px) {
     &__display-box {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  @media screen and (min-width: 992px) { 
+  @media screen and (min-width: 992px) {
     &__display-box {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -95,7 +95,7 @@
   animation: movieFadeIn 1s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
 
@@ -113,11 +113,11 @@
     justify-content: center;
     padding: 1rem;
   }
-  
+
   &-details {
     backdrop-filter: blur(10px);
     background-color: #00000099;
-    border-radius: .5rem .5rem 0 0;
+    border-radius: 0.5rem 0.5rem 0 0;
     // bottom: 0; // For testing purposes.
     bottom: calc(-75% - 5px); // The main position.
     display: grid;
@@ -139,12 +139,14 @@
     }
   }
 
+  // The box for a movie's genres:
+
   &-genre-box {
     align-self: end;
     color: #fff;
     flex-wrap: wrap;
     font-family: a.$body-font;
-    font-size: .8rem;
+    font-size: 0.8rem;
     font-weight: normal;
     // display: flex;
     gap: 0.5rem;
@@ -162,49 +164,13 @@
     display: inline-block;
     margin: 0.25rem;
     padding: 0.3rem 0.5rem;
-    transition: background-color .2s ease;
+    transition: background-color 0.2s ease;
 
     &:hover {
       background-color: #ffffff55;
     }
   }
 
-  &-panel {
-    align-items: center;
-    background-color: #00000099;
-    display: flex;
-    grid-area: body;
-    justify-content: center;
-    opacity: 0;
-    padding: 1rem;
-    pointer-events: none;
-    position: relative;
-    transition: opacity .5s ease-in-out;
-    z-index: 2;
-
-    &-details {
-      background-color: #111;
-      border-radius: .5rem;
-      height: 100%;
-      max-width: 1000px;
-      overflow: overlay;
-      padding: 1rem;
-      width: 100%;
-
-      h3, h4 {
-        color: #fff;
-        font-family: a.$body-font;
-        font-size: 1.6rem;
-        font-weight: normal;
-        text-transform: capitalize;
-      }
-
-      h4 {
-          font-size: 1rem;
-      }
-    }
-  }
-  
   &-poster {
     height: 100%;
     width: 100%;
@@ -218,7 +184,7 @@
     }
 
     &:after {
-      background-image: url('../assets/images/film-reel-icon.png');
+      background-image: url("../assets/images/film-reel-icon.png");
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;
@@ -233,7 +199,7 @@
       width: 100%;
     }
   }
-  
+
   &-rating {
     color: #bbb;
     cursor: default;
@@ -241,7 +207,7 @@
     font-size: 1.2rem;
     font-weight: normal;
     letter-spacing: normal;
-    
+
     &-box {
       border-left: 1px solid white;
       border-right: 1px solid white;
@@ -256,7 +222,7 @@
       color: #bbb;
       cursor: default;
       font-family: a.$body-font;
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-weight: normal;
       letter-spacing: normal;
     }
@@ -276,7 +242,7 @@
     letter-spacing: normal;
     padding: 1rem;
     text-transform: capitalize;
-    transition: color .2s ease;
+    transition: color 0.2s ease;
 
     &:hover {
       color: a.$primary-color;
@@ -293,50 +259,258 @@
     padding-right: 0.5rem;
   }
 
-  
-  @media screen and (min-width: 576px) {
-    &:hover &-details {
-      bottom: 0%;
-    }
+  &:hover &-details {
+    bottom: 0%;
   }
 }
 
-// Selected Movie Details Panel
+/* ================================== 
+Selected Movie Details Panel
+================================== */
+
+// Shows or hides the details panel:
 
 .display-checkbox {
   grid-area: body;
   display: none;
 
-  &:checked ~ .movie-panel {
+  &:checked ~ .panel {
     // display: block;
     opacity: 1;
     pointer-events: all;
   }
 }
 
+// The main panel itself:
+
 .panel {
+  align-items: center;
+  background-color: #050505;
+  display: flex;
+  grid-area: body;
+  justify-content: center;
+  opacity: 0;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  padding: 1.5rem;
+  pointer-events: none;
+  position: relative;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 2;
+
+  &-bg-poster {
+    filter: blur(200px) saturate(2.5);
+    height: 100%;
+    left: -25%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+
+  &-details {
+    // background-color: #111;
+    border-radius: 0.5rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-areas: 
+      "title-block"
+      "poster"
+      "summary"
+      "rating-block"
+    ;
+    // grid-template-columns: unset;
+    height: 100%;
+    max-width: 1000px;
+    overflow: overlay;
+    // padding: 1rem;
+    width: 100%;
+
+    h3,
+    h4 {
+      color: #fff;
+      font-family: a.$body-font;
+      font-size: 1.6rem;
+      font-weight: normal;
+      letter-spacing: normal;
+      text-transform: capitalize;
+    }
+
+    h3 {
+      font-size: 1rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    span {
+      font-size: 1.3rem;
+    }
+  }
+
+  &-genre-tag {
+    background-color: #ffffff22;
+    border-radius: 5rem;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.75rem;
+    margin: 0.25rem;
+    padding: 0.1rem 0.5rem;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #ffffff55;
+    }
+  }
+
+  &-genres-block {
+    padding-bottom: .75rem;
+  }
 
   &-poster {
-    max-width: 240px;
+    border-radius: .5rem;
+    grid-area: poster;
+    justify-self: center;
+    width: 100%;
+  }
+
+  &-rating-block {
+    grid-area: rating-block;
+    justify-self: center;
+
+    h3, h4 {
+      display: inline-block;
+    }
+
+    h4::before {
+      content: "•";
+      padding: 0 0.5rem 0 0.3rem;
+    }
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  &-summary {
+    color: a.$secondary-color;
+    display: grid;
+    grid-template-rows: min-content;
+    font-family: a.$body-font;
+    grid-area: summary;
+    line-height: 1.6rem;
   }
 
   &-title-block {
+    display: grid;
+    gap: .5rem;
+    grid-area: title-block;
+    grid-template-rows: min-content;
 
+    h3 {
+      font-size: 1.6rem;
+    }
+  }
+
+  @media screen and (min-width: 576px) {
+    &-bg-poster {
+      filter: blur(200px) brightness(.25) saturate(2.5);
+      height: unset;
+    }
+
+    &-details {
+      grid-template-areas: 
+        "poster title-block rating-block"
+        "poster summary summary"
+      ;
+      grid-template-columns: min-content;
+      grid-template-rows: min-content;
+      height: unset;
+    }
+
+    &-genre-tag {
+      font-size: 1rem;
+      padding: 0.3rem 0.5rem;
+    }
+
+    &-genres-block {
+      justify-content: unset;
+      padding-bottom: unset;
+      padding-top: 0.75rem;
+    }
+
+    &-poster {
+      justify-self: unset;
+      max-width: 240px;
+      width: unset;
+    }
+
+    &-rating-block {
+      justify-self: end;
+
+       h3, h4 {
+         display: block;
+       }
+
+       h3 {
+         font-size: 1.3rem;
+       }
+
+       h4 {
+         font-size: .85rem;
+         text-align: right;
+
+         &::before {
+           content: "";
+         }
+       }
+
+       span {
+         font-size: 1.6rem;
+       }
+    }
+
+    &-summary {
+      align-content: end;
+      grid-template-areas: 
+        "summary"
+        "genres"
+      ;
+
+      .summary {
+        grid-area: summary;
+        padding-left: .25rem;
+      }
+    }
+
+    &-title-block {
+
+      h3 {
+        font-size: 2rem;
+      }
+
+      span {
+        padding: .5rem;
+      }
+    }
   }
 }
+
+// CLOSE BUTTON
 
 .close-button {
   align-items: center;
   color: #fff;
   cursor: pointer;
   display: flex;
-  height: 20px;
+  height: 30px;
   justify-content: center;
   position: absolute;
   right: 0;
   top: 0;
-  transition: background-color .2s ease-in-out;
-  width: 20px;
+  transition: background-color 0.2s ease-in-out;
+  width: 30px;
 
   &:hover {
     background-color: #ffffff55;
@@ -356,7 +530,7 @@
   top: 50%;
   transform: rotate(45deg);
   width: 50%;
-  
+
   &::after {
     background: #fff;
     content: "";

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @font-face {
@@ -84,6 +85,9 @@ body {
   font-weight: normal;
 }
 
+/* ==========================================
+/ PAGES
+========================================== */
 .page-content {
   display: grid;
   grid-template-areas: "header" "body" "footer";
@@ -233,42 +237,6 @@ body {
   background-color: #ffffff55;
 }
 
-.movie-panel {
-  align-items: center;
-  background-color: #00000099;
-  display: flex;
-  grid-area: body;
-  justify-content: center;
-  opacity: 0;
-  padding: 1rem;
-  pointer-events: none;
-  position: relative;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 2;
-}
-
-.movie-panel-details {
-  background-color: #111;
-  border-radius: 0.5rem;
-  height: 100%;
-  max-width: 1000px;
-  overflow: overlay;
-  padding: 1rem;
-  width: 100%;
-}
-
-.movie-panel-details h3, .movie-panel-details h4 {
-  color: #fff;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.6rem;
-  font-weight: normal;
-  text-transform: capitalize;
-}
-
-.movie-panel-details h4 {
-  font-size: 1rem;
-}
-
 .movie-poster {
   height: 100%;
   width: 100%;
@@ -355,37 +323,231 @@ body {
   padding-right: 0.5rem;
 }
 
-@media screen and (min-width: 576px) {
-  .movie:hover .movie-details {
-    bottom: 0%;
-  }
+.movie:hover .movie-details {
+  bottom: 0%;
 }
+
+/* ================================== 
+Selected Movie Details Panel
+================================== */
 .display-checkbox {
   grid-area: body;
   display: none;
 }
 
-.display-checkbox:checked ~ .movie-panel {
+.display-checkbox:checked ~ .panel {
   opacity: 1;
   pointer-events: all;
 }
 
-.panel-poster {
-  max-width: 240px;
+.panel {
+  align-items: center;
+  background-color: #050505;
+  display: flex;
+  grid-area: body;
+  justify-content: center;
+  opacity: 0;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  padding: 1.5rem;
+  pointer-events: none;
+  position: relative;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 2;
 }
 
+.panel-bg-poster {
+  filter: blur(200px) saturate(2.5);
+  height: 100%;
+  left: -25%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.panel-details {
+  border-radius: 0.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: "title-block" "poster" "summary" "rating-block";
+  height: 100%;
+  max-width: 1000px;
+  overflow: overlay;
+  width: 100%;
+}
+
+.panel-details h3,
+.panel-details h4 {
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  text-transform: capitalize;
+}
+
+.panel-details h3 {
+  font-size: 1rem;
+}
+
+.panel-details h4 {
+  font-size: 1rem;
+}
+
+.panel-details span {
+  font-size: 1.3rem;
+}
+
+.panel-genre-tag {
+  background-color: #ffffff22;
+  border-radius: 5rem;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.75rem;
+  margin: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.panel-genre-tag:hover {
+  background-color: #ffffff55;
+}
+
+.panel-genres-block {
+  padding-bottom: 0.75rem;
+}
+
+.panel-poster {
+  border-radius: 0.5rem;
+  grid-area: poster;
+  justify-self: center;
+  width: 100%;
+}
+
+.panel-rating-block {
+  grid-area: rating-block;
+  justify-self: center;
+}
+
+.panel-rating-block h3, .panel-rating-block h4 {
+  display: inline-block;
+}
+
+.panel-rating-block h4::before {
+  content: "•";
+  padding: 0 0.5rem 0 0.3rem;
+}
+
+.panel-rating-block span {
+  font-weight: bold;
+}
+
+.panel-summary {
+  color: #fff;
+  display: grid;
+  grid-template-rows: min-content;
+  font-family: "Montserrat", sans-serif;
+  grid-area: summary;
+  line-height: 1.6rem;
+}
+
+.panel-title-block {
+  display: grid;
+  gap: 0.5rem;
+  grid-area: title-block;
+  grid-template-rows: min-content;
+}
+
+.panel-title-block h3 {
+  font-size: 1.6rem;
+}
+
+@media screen and (min-width: 576px) {
+  .panel-bg-poster {
+    filter: blur(200px) brightness(0.25) saturate(2.5);
+    height: unset;
+  }
+
+  .panel-details {
+    grid-template-areas: "poster title-block rating-block" "poster summary summary";
+    grid-template-columns: min-content;
+    grid-template-rows: min-content;
+    height: unset;
+  }
+
+  .panel-genre-tag {
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .panel-genres-block {
+    justify-content: unset;
+    padding-bottom: unset;
+    padding-top: 0.75rem;
+  }
+
+  .panel-poster {
+    justify-self: unset;
+    max-width: 240px;
+    width: unset;
+  }
+
+  .panel-rating-block {
+    justify-self: end;
+  }
+
+  .panel-rating-block h3, .panel-rating-block h4 {
+    display: block;
+  }
+
+  .panel-rating-block h3 {
+    font-size: 1.3rem;
+  }
+
+  .panel-rating-block h4 {
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  .panel-rating-block h4::before {
+    content: "";
+  }
+
+  .panel-rating-block span {
+    font-size: 1.6rem;
+  }
+
+  .panel-summary {
+    align-content: end;
+    grid-template-areas: "summary" "genres";
+  }
+
+  .panel-summary .summary {
+    grid-area: summary;
+    padding-left: 0.25rem;
+  }
+
+  .panel-title-block h3 {
+    font-size: 2rem;
+  }
+
+  .panel-title-block span {
+    padding: 0.5rem;
+  }
+}
 .close-button {
   align-items: center;
   color: #fff;
   cursor: pointer;
   display: flex;
-  height: 20px;
+  height: 30px;
   justify-content: center;
   position: absolute;
   right: 0;
   top: 0;
   transition: background-color 0.2s ease-in-out;
-  width: 20px;
+  width: 30px;
 }
 
 .close-button:hover {
