@@ -48,7 +48,7 @@ const getGenres = async url => {
     })
 }
 
-// Function to fetch movies (and genres, WIP):
+// Function to fetch movies for main panel:
 const showMovies = async (apiUrl, genreUrl) => {
   // Gets the list of genres to be checked later:
   fetch(genreUrl)
@@ -67,14 +67,16 @@ const showMovies = async (apiUrl, genreUrl) => {
     .then(response => response.json())
     .then(data =>
       data.results.forEach((element, i) => {
-        // For testing purposes:
-        // console.log(element)
-
+        
         setTimeout(() => {
           // Sets up the main movie element display:
           const movieElement = document.createElement("div")
           movieElement.classList.add(`movie`)
-          if (element.release_date) {
+          if (element.release_date && element.poster_path) {
+            
+            // For testing purposes:
+            // console.log(element)
+
             movieBoxDisplay.appendChild(movieElement)
           }
 
@@ -105,16 +107,7 @@ const showMovies = async (apiUrl, genreUrl) => {
           const movieYear = document.createElement("h3")
           movieYear.classList.add("movie-year")
           movieDesc.appendChild(movieYear)
-
-          // IF THERE'S NO YEAR:
-          if (element.release_date) {
-            movieYear.innerHTML = `${dateFns.format(
-              element.release_date,
-              "YYYY"
-            )}`
-          } else {
-            movieYear.innerHTML = `N/A`
-          }
+          movieYear.innerHTML = `${dateFns.format(element.release_date, "YYYY")}`
 
           // RATING BOX DISPLAY:
           const movieRatingBox = document.createElement("div")
@@ -131,7 +124,10 @@ const showMovies = async (apiUrl, genreUrl) => {
           const movieRatingCount = document.createElement("h4")
           movieRatingCount.classList.add("movie-rating-count")
           movieRatingBox.appendChild(movieRatingCount)
-          movieRatingCount.innerHTML = `${element.vote_count}`
+          movieRatingCount.innerHTML = `${Math.abs(element.vote_count) > 999 ? 
+            Math.sign(element.vote_count)*((Math.abs(element.vote_count)/1000).toFixed(1)) + 'K' : 
+            Math.sign(element.vote_count) * Math.abs(element.vote_count)}
+`
 
           // CERTIFICATION:
           const releaseDateUrl = `https://api.themoviedb.org/3/movie/${element.id}/release_dates?api_key=${apiKey}`
@@ -193,12 +189,14 @@ const showMovies = async (apiUrl, genreUrl) => {
 const fetchMovie = elementId => {
 
   // Sets up some movie search URLs:
+  const movieCreditsUrl = `https://api.themoviedb.org/3/movie/${elementId}/credits?api_key=${apiKey}&language=en-US`
+
   const movieSearchUrl = `https://api.themoviedb.org/3/movie/${elementId}?api_key=${apiKey}&language=en-US`
 
   const releaseDateUrl = `https://api.themoviedb.org/3/movie/${elementId}/release_dates?api_key=${apiKey}`
 
-  // For movie rating:
-  let movieRating;
+  // Variable for storing the movie's Certification:
+  let certification
 
   // Gets the movie's release date and certification:
   fetch(releaseDateUrl)
@@ -208,21 +206,34 @@ const fetchMovie = elementId => {
         if (item.iso_3166_1 === "US") {
           item.release_dates.forEach(date => {
             if (date.certification) {
-              movieRating = `${date.certification}`
-            } else {
-              movieRating = `NR`
+              certification = `${date.certification}`
             }
           })
         }
       })
     })
 
-  // Fetches the data:
+  // Variable for storing the movie's credits:
+  let director
+
+  fetch(movieCreditsUrl)
+    .then(response => response.json())
+    .then(data => {
+      data.crew.map(
+        crew => {
+          if (crew.job === "Director") {
+            director = crew.name 
+          }
+        }
+      )
+    })
+
+  // Fetches the individual movie's data:
   fetch(movieSearchUrl)
     .then(response => response.json())
     .then(data => {
       // For testing purposes:
-      console.log(data)
+      // console.log(data)
 
       // Unhides the panel:
       movieCheckbox.checked = true
@@ -240,7 +251,7 @@ const fetchMovie = elementId => {
       // Getting the info for the genres panel:
       const genres = data.genres.map(genre => `<p class="panel-genre-tag">${genre.name}</p>`)
 
-      console.log(genres);
+      // console.log(genres);
 
       // Creates a panel to plug information into:
       const panelDetails = document.createElement("section")
@@ -248,17 +259,20 @@ const fetchMovie = elementId => {
       panelDetails.innerHTML = `
         <div class="panel-title-block">
           <h3>${data.title}</h3>
-          <h4>${dateFns.format(data.release_date, "YYYY")} <span>•</span> ${movieRating} <span>•</span> ${timeConvert(data.runtime)}</h4>
+          <h4>${dateFns.format(data.release_date, "YYYY")} <span>•</span> ${certification ? certification : `NR`} <span>•</span> ${timeConvert(data.runtime)}</h4>
         </div>
         <div class="panel-summary">
           <div class="panel-genres-block">
             ${genres.join(" ")}
           </div>
+          <p class="director">Director: ${director}</p>
           <p class="summary">${data.overview}</p>
         </div>
         <div class="panel-rating-block">
           <h3><span>${data.vote_average}</span> / 10</h3>
-          <h4>${data.vote_count}</h4>
+          <h4>${Math.abs(data.vote_count) > 999 
+              ? Math.sign(data.vote_count)*((Math.abs(data.vote_count)/1000).toFixed(1)) + 'K' 
+              : Math.sign(data.vote_count) * Math.abs(data.vote_count)}</h4>
         </div>
         <img class="panel-poster" src="${imgPath}${data.poster_path}">
       `

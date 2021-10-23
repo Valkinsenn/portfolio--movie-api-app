@@ -176,6 +176,7 @@ body {
 
 .movie-cert {
   color: #fff;
+  cursor: default;
   font-family: "Montserrat", sans-serif;
   font-size: 1.2rem;
   letter-spacing: normal;
@@ -393,6 +394,7 @@ Selected Movie Details Panel
 
 .panel-details h4 {
   font-size: 1rem;
+  padding-left: 0.15rem;
 }
 
 .panel-details span {
@@ -452,11 +454,16 @@ Selected Movie Details Panel
   line-height: 1.6rem;
 }
 
+.panel-summary .director {
+  margin-bottom: 0.75rem;
+}
+
 .panel-title-block {
   display: grid;
-  gap: 0.5rem;
+  gap: 1rem;
   grid-area: title-block;
   grid-template-rows: min-content;
+  padding-left: 0.25rem;
 }
 
 .panel-title-block h3 {
@@ -471,14 +478,15 @@ Selected Movie Details Panel
 
   .panel-details {
     grid-template-areas: "poster title-block rating-block" "poster summary summary";
-    grid-template-columns: min-content;
-    grid-template-rows: min-content;
+    grid-template-columns: 1fr auto 100px;
+    grid-template-rows: auto 1fr 100%;
     height: unset;
+    overflow: unset;
   }
 
   .panel-genre-tag {
     font-size: 1rem;
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 0.5rem 0.2rem;
   }
 
   .panel-genres-block {
@@ -519,8 +527,12 @@ Selected Movie Details Panel
   }
 
   .panel-summary {
-    align-content: end;
-    grid-template-areas: "summary" "genres";
+    grid-template-areas: "director" "summary" "genres";
+  }
+
+  .panel-summary .director {
+    grid-area: director;
+    padding-left: 0.25rem;
   }
 
   .panel-summary .summary {
